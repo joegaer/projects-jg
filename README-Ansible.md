@@ -100,7 +100,7 @@ To quickly update packages, clean system bloat, and handle necessary reboots wit
 
 &#x20;       create: true
 
-&#x20;       line: "==== {{ \['','January','February','March','April','May','June','July','August','September','October','November','December']\[ansible\_facts\['date\_time']\['month'] | int] }} {{ ansible\_facts\['date\_time']\['day'] | int }} {{ ansible\_facts\['date\_time']\['year'] }} ===="
+&#x20;       line: "==== {{ \['','January','February','March','April','May','June','July','August','September','October November','December']\[ansible\_facts\['date\_time']\['month'] | int] }} {{ ansible\_facts\['date\_time']\['day'] | int }} {{ ansible\_facts\['date\_time']\['year'] }} ===="
 
 &#x20;       insertafter: "Newest entries at the top."
 

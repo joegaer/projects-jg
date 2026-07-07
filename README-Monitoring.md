@@ -1,196 +1,97 @@
-\# Monitoring Stack
+# Monitoring Stack
+## Grafana · Prometheus · Node Exporter · Blackbox Exporter
 
-\## Grafana · Prometheus · Node Exporter · Blackbox Exporter
-
-
-
-\### What is it?
-
+### What is it?
 A full monitoring stack for tracking system performance and service availability. Prometheus collects metrics, Node Exporter exposes host metrics, Blackbox Exporter probes services, and Grafana visualizes everything in graphs.
 
-
-
-\### Why did I install it?
-
+### Why did I install it?
 To track CPU and memory usage over time like a task manager with history, and to monitor AdGuard availability including connection speed, processing time, and transfer speed.
 
+### How They Work Together
+* **Node Exporter** exposes host machine metrics (CPU, memory, disk, etc.)
+* **Blackbox Exporter** probes AdGuard over HTTP and returns availability and response times
+* **Prometheus** scrapes both every 15 seconds and stores the data
+* **Grafana** connects to Prometheus and displays everything as graphs
 
-
-\### How They Work Together
-
-\* \*\*Node Exporter\*\* exposes host machine metrics (CPU, memory, disk, etc.)
-
-\* \*\*Blackbox Exporter\*\* probes AdGuard over HTTP and returns availability and response times
-
-\* \*\*Prometheus\*\* scrapes both every 15 seconds and stores the data
-
-\* \*\*Grafana\*\* connects to Prometheus and displays everything as graphs
-
-
-
-\### compose.yaml
-
-
+### compose.yaml
 
 ```yaml
-
 services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prom_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    ports:
+      - "9090:9090"
+    restart: unless-stopped
 
-&#x20; prometheus:
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - '--path.rootfs=/rootfs'
+    ports:
+      - "9100:9100"
+    restart: unless-stopped
 
-&#x20;   image: prom/prometheus:latest
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3100:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    restart: unless-stopped
 
-&#x20;   container\_name: prometheus
-
-&#x20;   volumes:
-
-&#x20;     - ./prometheus.yml:/etc/prometheus/prometheus.yml
-
-&#x20;     - prom\_data:/prometheus
-
-&#x20;   command:
-
-&#x20;     - '--config.file=/etc/prometheus/prometheus.yml'
-
-&#x20;   ports:
-
-&#x20;     - "9090:9090"
-
-&#x20;   restart: unless-stopped
-
-
-
-&#x20; node-exporter:
-
-&#x20;   image: prom/node-exporter:latest
-
-&#x20;   container\_name: node-exporter
-
-&#x20;   volumes:
-
-&#x20;     - /proc:/host/proc:ro
-
-&#x20;     - /sys:/host/sys:ro
-
-&#x20;     - /:/rootfs:ro
-
-&#x20;   command:
-
-&#x20;     - '--path.procfs=/host/proc'
-
-&#x20;     - '--path.sysfs=/host/sys'
-
-&#x20;     - '--path.rootfs=/rootfs'
-
-&#x20;   ports:
-
-&#x20;     - "9100:9100"
-
-&#x20;   restart: unless-stopped
-
-
-
-&#x20; grafana:
-
-&#x20;   image: grafana/grafana:latest
-
-&#x20;   container\_name: grafana
-
-&#x20;   ports:
-
-&#x20;     - "3100:3000"
-
-&#x20;   volumes:
-
-&#x20;     - grafana\_data:/var/lib/grafana
-
-&#x20;   restart: unless-stopped
-
-
-
-&#x20; blackbox-exporter:
-
-&#x20;   image: prom/blackbox-exporter:latest
-
-&#x20;   container\_name: blackbox-exporter
-
-&#x20;   ports:
-
-&#x20;     - "9115:9115"
-
-&#x20;   restart: unless-stopped
-
-
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    container_name: blackbox-exporter
+    ports:
+      - "9115:9115"
+    restart: unless-stopped
 
 volumes:
-
-&#x20; prom\_data:
-
-&#x20; grafana\_data:
-
+  prom_data:
+  grafana_data:
 ```
 
-
-
-\### prometheus.yml
-
-
+### prometheus.yml
 
 ```yaml
-
 global:
+  scrape_interval: 15s
 
-&#x20; scrape\_interval: 15s
+scrape_configs:
+  - job_name: 'node-metrics'
+    static_configs:
+      - targets: ['node-exporter:9100']
 
-
-
-scrape\_configs:
-
-&#x20; - job\_name: 'node-metrics'
-
-&#x20;   static\_configs:
-
-&#x20;     - targets: \['node-exporter:9100']
-
-
-
-&#x20; - job\_name: 'adguard-status'
-
-&#x20;   metrics\_path: /probe
-
-&#x20;   params:
-
-&#x20;     module: \[http\_2xx]
-
-&#x20;   static\_configs:
-
-&#x20;     - targets:
-
-&#x20;         - http://192.168.1.5
-
-&#x20;   relabel\_configs:
-
-&#x20;     - source\_labels: \[\_\_address\_\_]
-
-&#x20;       target\_label: \_\_param\_target
-
-&#x20;     - source\_labels: \[\_\_param\_target]
-
-&#x20;       target\_label: instance
-
-&#x20;     - target\_label: \_\_address\_\_
-
-&#x20;       replacement: blackbox-exporter:9115
-
+  - job_name: 'adguard-status'
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets:
+          - http://192.168.1.5
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115
 ```
 
-
-
-\### What Prometheus is Scraping
-
-\* \*\*node-metrics\*\* — host machine metrics from Node Exporter every 15s
-
-\* \*\*adguard-status\*\* — probing AdGuard at `192.168.1.5` via Blackbox Exporter, checking HTTP 200 response, connection speed, processing time, and transfer speed
-
-
-
+### What Prometheus is Scraping
+* **node-metrics** — host machine metrics from Node Exporter every 15s
+* **adguard-status** — probing AdGuard at `192.168.1.5` via Blackbox Exporter, checking HTTP 200 response, connection speed, processing time, and transfer speed

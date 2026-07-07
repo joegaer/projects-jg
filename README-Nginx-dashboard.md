@@ -1,29 +1,20 @@
-Core Routing & Portal Layer
+# Core Routing & Portal Layer
+## Cloudflare Tunnel · Nginx Proxy Manager · Flame Dashboard
 
-Cloudflare Tunnel · Nginx Proxy Manager · Flame Dashboard
-What is it?
-
+### What is it?
 A centralized inbound traffic routing and visual landing layer. Acts as a single secure gateway into the server, routing domain traffic into applications while providing a unified homepage to view and launch tools.
-Why did I install it?
 
+### Why did I install it?
 To fix a port 80 conflict with AdGuard by shifting web traffic to port 8090, eliminate the need to remember individual ports for each service, and replace bookmarked subdomains with a clean visual launchpad at go.joekoda.com.
 
+### How They Work Together
+* Cloudflare Tunnel catches public traffic at `*.joekoda.com` and sends it into the network on port 8090.
+* Nginx Proxy Manager listens on port 8090, reads the domain name, and forwards to the correct internal port.
+* Flame Dashboard sits inside Nginx's network and serves as the visual launcher.
 
-How They Work Together
+### compose.yaml
 
-    Cloudflare Tunnel catches public traffic at *.joekoda.com and sends
-
-it into the network on port 8090
-
-    Nginx Proxy Manager listens on port 8090, reads the domain name, and
-
-forwards to the correct internal port
-
-    Flame Dashboard sits inside Nginx's network and serves as the visual
-
-
-compose.yaml
-
+```yaml
 services:
   # 1. Traffic Routing Engine
   nginx-proxy-manager:
@@ -48,6 +39,7 @@ services:
       - TUNNEL_TOKEN=<mytoken>
     command: tunnel --no-autoupdate run
     network_mode: "host" # Allows the tunnel to see port 8090 directly on your server
+
   # 3. Dashboard UI
   flame-dashboard:
     image: 'pawelmalak/flame:latest'
@@ -58,7 +50,8 @@ services:
     network_mode: "service:nginx-proxy-manager" # This embeds Flame right inside Nginx's space
     environment:
       - PASSWORD=<mypass>
+
 networks:
   routing-net:
     driver: bridge
-
+```

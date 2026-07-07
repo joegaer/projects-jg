@@ -1,32 +1,38 @@
-Ansible
-
-What is it?
+\# Ansible
 
 
+
+\### What is it?
 
 An open-source, agentless IT automation engine used for configuration management, system updates, and application deployment.
 
-Why did I install it?
 
 
+\### Why did I install it?
 
 To quickly update packages, clean system bloat, and handle necessary reboots with a single command across my machine.
 
 
 
-hosts
+\### hosts
 
 
+
+```ini
 
 \[homelab]
 
 192.168.1.5 ansible\_user=joe
 
+```
 
 
-update.yml
+
+\### update.yml
 
 
+
+```yaml
 
 \---
 
@@ -102,17 +108,17 @@ update.yml
 
 &#x20;   - name: Insert update entry directly under today's date header
 
-&#x20;      ansible.builtin.lineinfile:
+&#x20;     ansible.builtin.lineinfile:
 
-&#x20;        path: /home/joe/dokuwiki/dokuwiki/config/dokuwiki/data/pages/changelog.txt
+&#x20;       path: /home/joe/dokuwiki/dokuwiki/config/dokuwiki/data/pages/changelog.txt
 
-&#x20;        line: "  \* \*\*{{ ansible\_facts\['date\_time']\['hour'] }}:{{ ansible\_facts\['date\_time']\['minute'] }}:{{ ansible\_facts\['date\_time']\['second'] }}\*\* - Automated maintenance: System packages and all Docker container stacks successfully updated."
+&#x20;       line: "  \* \*\*{{ ansible\_facts\['date\_time']\['hour'] }}:{{ ansible\_facts\['date\_time']\['minute'] }}:{{ ansible\_facts\['date\_time']\['second'] }}\*\* - Automated maintenance: System packages and all Docker container stacks successfully updated."
 
-&#x20;        insertafter: "==== {{ \['','January','February','March','April','May','June','July','August','September','October','November','December']\[ansible\_facts\['date\_time']\['month'] | int] }} {{ ansible\_facts\['date\_time']\['day'] | int }} {{ ansible\_facts\['date\_time']\['year'] }} ===="
+&#x20;       insertafter: "==== {{ \['','January','February','March','April','May','June','July','August','September','October','November','December']\[ansible\_facts\['date\_time']\['month'] | int] }} {{ ansible\_facts\['date\_time']\['day'] | int }} {{ ansible\_facts\['date\_time']\['year'] }} ===="
 
 &#x20;
 
-&#x20; # Place these right after your docker compose task block
+&#x20;   # Place these right after your docker compose task block
 
 &#x20;   - name: Check if a system reboot is required
 
@@ -131,4 +137,8 @@ update.yml
 &#x20;       msg: "Rebooting homelab server after system updates..."
 
 &#x20;     when: reboot\_flag.stat.exists
+
+```
+
+
 

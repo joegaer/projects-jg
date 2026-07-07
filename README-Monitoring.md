@@ -1,40 +1,38 @@
-Monitoring Stack
+\# Monitoring Stack
+
+\## Grafana · Prometheus · Node Exporter · Blackbox Exporter
 
 
 
-Grafana · Prometheus · Node Exporter · Blackbox Exporter
-
-What is it?
-
-
+\### What is it?
 
 A full monitoring stack for tracking system performance and service availability. Prometheus collects metrics, Node Exporter exposes host metrics, Blackbox Exporter probes services, and Grafana visualizes everything in graphs.
 
-Why did I install it?
 
 
+\### Why did I install it?
 
 To track CPU and memory usage over time like a task manager with history, and to monitor AdGuard availability including connection speed, processing time, and transfer speed.
 
 
 
-How They Work Together
+\### How They Work Together
+
+\* \*\*Node Exporter\*\* exposes host machine metrics (CPU, memory, disk, etc.)
+
+\* \*\*Blackbox Exporter\*\* probes AdGuard over HTTP and returns availability and response times
+
+\* \*\*Prometheus\*\* scrapes both every 15 seconds and stores the data
+
+\* \*\*Grafana\*\* connects to Prometheus and displays everything as graphs
 
 
 
-&#x20;   Node Exporter exposes host machine metrics (CPU, memory, disk, etc.)
-
-&#x20;   Blackbox Exporter probes AdGuard over HTTP and returns availability and response times
-
-&#x20;   Prometheus scrapes both every 15 seconds and stores the data
-
-&#x20;   Grafana connects to Prometheus and displays everything as graphs
+\### compose.yaml
 
 
 
-compose.yaml
-
-
+```yaml
 
 services:
 
@@ -130,11 +128,15 @@ volumes:
 
 &#x20; grafana\_data:
 
+```
 
 
-prometheus.yml
+
+\### prometheus.yml
 
 
+
+```yaml
 
 global:
 
@@ -180,13 +182,15 @@ scrape\_configs:
 
 &#x20;       replacement: blackbox-exporter:9115
 
-
-
-What Prometheus is Scraping
+```
 
 
 
-&#x20;   node-metrics — host machine metrics from Node Exporter every 15s
+\### What Prometheus is Scraping
 
-&#x20;   adguard-status — probing AdGuard at 192.168.1.5 via Blackbox Exporter, checking HTTP 200 response, connection speed, processing time, and transfer speed
+\* \*\*node-metrics\*\* — host machine metrics from Node Exporter every 15s
+
+\* \*\*adguard-status\*\* — probing AdGuard at `192.168.1.5` via Blackbox Exporter, checking HTTP 200 response, connection speed, processing time, and transfer speed
+
+
 

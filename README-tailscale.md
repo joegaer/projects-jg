@@ -1,28 +1,30 @@
-Tailscale
-
-What is it?
+\# Tailscale
 
 
+
+\### What is it?
 
 A VPN mesh network that connects all your devices securely over the internet without needing to open ports or configure a router.
 
-Why did I install it?
 
 
+\### Why did I install it?
 
 To remotely access the homelab server and all its services from anywhere. Also used as an exit node so all internet traffic from connected devices routes through the homelab.
 
-Access
+
+
+\### Access
+
+\* \*\*Admin Console:\*\* https://login.tailscale.com/admin
 
 
 
-&#x20;   Admin Console: https://login.tailscale.com/admin
+\### docker-compose.yml
 
 
 
-docker-compose.yml
-
-
+```yaml
 
 services:
 
@@ -57,4 +59,8 @@ services:
 &#x20;     - NET\_RAW
 
 &#x20;   restart: unless-stopped
+
+```
+
+
 

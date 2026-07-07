@@ -1,66 +1,32 @@
-\# Tailscale
+# Tailscale
 
-
-
-\### What is it?
-
+### What is it?
 A VPN mesh network that connects all your devices securely over the internet without needing to open ports or configure a router.
 
-
-
-\### Why did I install it?
-
+### Why did I install it?
 To remotely access the homelab server and all its services from anywhere. Also used as an exit node so all internet traffic from connected devices routes through the homelab.
 
+### Access
+* **Admin Console:** https://login.tailscale.com/admin
 
-
-\### Access
-
-\* \*\*Admin Console:\*\* https://login.tailscale.com/admin
-
-
-
-\### docker-compose.yml
-
-
+### docker-compose.yml
 
 ```yaml
-
 services:
-
-&#x20; tailscale:
-
-&#x20;   network\_mode: "host"
-
-&#x20;   image: tailscale/tailscale:latest
-
-&#x20;   container\_name: tailscale
-
-&#x20;   hostname: docker-tailscale
-
-&#x20;   environment:
-
-&#x20;     - TS\_HOSTNAME=docker-tailscale
-
-&#x20;     - TS\_STATE\_DIR=/var/lib/tailscale
-
-&#x20;     - TS\_EXTRA\_ARGS=--accept-dns=false --advertise-exit-node
-
-&#x20;   volumes:
-
-&#x20;     - ./state:/var/lib/tailscale
-
-&#x20;     - /dev/net/tun:/dev/net/tun
-
-&#x20;   cap\_add:
-
-&#x20;     - NET\_ADMIN
-
-&#x20;     - NET\_RAW
-
-&#x20;   restart: unless-stopped
-
+  tailscale:
+    network_mode: "host"
+    image: tailscale/tailscale:latest
+    container_name: tailscale
+    hostname: docker-tailscale
+    environment:
+      - TS_HOSTNAME=docker-tailscale
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--accept-dns=false --advertise-exit-node
+    volumes:
+      - ./state:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    restart: unless-stopped
 ```
-
-
-

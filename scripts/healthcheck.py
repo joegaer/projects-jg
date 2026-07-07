@@ -1,7 +1,6 @@
 import requests
 from datetime import datetime
-
-HOST = "192.168.1.5"
+from config import HOST
 
 services = {
     "DokuWiki": 8081,

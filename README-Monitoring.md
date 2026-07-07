@@ -1,16 +1,16 @@
-**Monitoring Stack**
+Monitoring Stack
 
 
 
 Grafana · Prometheus · Node Exporter · Blackbox Exporter
 
-**What is it?**
+What is it?
 
 
 
 A full monitoring stack for tracking system performance and service availability. Prometheus collects metrics, Node Exporter exposes host metrics, Blackbox Exporter probes services, and Grafana visualizes everything in graphs.
 
-**Why did I install it?**
+Why did I install it?
 
 
 
@@ -18,7 +18,7 @@ To track CPU and memory usage over time like a task manager with history, and to
 
 
 
-**How They Work Together**
+How They Work Together
 
 
 
@@ -32,7 +32,7 @@ To track CPU and memory usage over time like a task manager with history, and to
 
 
 
-**compose.yaml**
+compose.yaml
 
 
 
@@ -182,15 +182,11 @@ scrape\_configs:
 
 
 
-**What Prometheus is Scraping**
+What Prometheus is Scraping
 
 
 
 &#x20;   node-metrics — host machine metrics from Node Exporter every 15s
 
 &#x20;   adguard-status — probing AdGuard at 192.168.1.5 via Blackbox Exporter, checking HTTP 200 response, connection speed, processing time, and transfer speed
-
-
-
-
 

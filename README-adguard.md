@@ -1,12 +1,12 @@
 AdGuard Home
 
-**What is it?**
+What is it?
 
 
 
 A network-wide DNS-based ad blocker and privacy filter. Blocks ads, malware, phishing, and tracking at the DNS level before it reaches your devices.
 
-**Why did I install it?**
+Why did I install it?
 
 
 
@@ -14,7 +14,7 @@ To block harmful websites, stop phishing links, and have the best possible ad bl
 
 
 
-**Docker Compose**
+Docker Compose
 
 
 

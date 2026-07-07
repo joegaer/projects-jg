@@ -1,12 +1,12 @@
 DokuWiki
 
-**What is it?**
+What is it?
 
 
 
 A simple flat-file wiki with no database required. Used as the documentation platform for this homelab.
 
-**Why did I install it?**
+Why did I install it?
 
 
 
@@ -20,7 +20,7 @@ Access
 
 
 
-**compose.yaml**
+compose.yaml
 
 
 
@@ -51,8 +51,4 @@ services:
 &#x20;     - 8443:443
 
 &#x20;   restart: unless-stopped
-
-
-
-
 

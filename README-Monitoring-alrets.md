@@ -1,12 +1,12 @@
-**Nagios Core \& Uptime Kuma**
+Nagios Core \& Uptime Kuma
 
-**What are they?**
+What are they?
 
 
 
 Two complementary monitoring tools. Uptime Kuma provides a clean UI for quick uptime checks and Discord alerts. Nagios Core provides deeper visibility into host and service metrics.
 
-**Why did I install them?**
+Why did I install them?
 
 
 
@@ -14,7 +14,7 @@ To monitor homelab services and get Discord alerts when something goes down. Nag
 
 
 
-**Docker Compose**
+Docker Compose
 
 
 
@@ -65,8 +65,4 @@ services:
 &#x20;     - "3001:3001"
 
 &#x20;   restart: always
-
-
-
-
 

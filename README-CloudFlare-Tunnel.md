@@ -1,12 +1,12 @@
 Cloudflare Tunnel
 
-**What is it?**
+What is it?
 
 
 
 A secure tunnel that connects the homelab to Cloudflare without needing to open any ports or expose the server directly to the internet. Also used with Cloudflare Access to put login gates on private services.
 
-**Why did I install it?**
+Why did I install it?
 
 
 
@@ -14,7 +14,7 @@ To share the DokuWiki documentation publicly at wiki.joekoda.com and to access a
 
 
 
-**compose.yaml**
+compose.yaml
 
 
 
@@ -35,8 +35,4 @@ services:
 &#x20;     - 8.8.8.8
 
 &#x20;   restart: unless-stopped
-
-
-
-
 

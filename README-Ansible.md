@@ -1,12 +1,12 @@
-**Ansible**
+Ansible
 
-**What is it?**
+What is it?
 
 
 
 An open-source, agentless IT automation engine used for configuration management, system updates, and application deployment.
 
-**Why did I install it?**
+Why did I install it?
 
 
 
@@ -14,7 +14,7 @@ To quickly update packages, clean system bloat, and handle necessary reboots wit
 
 
 
-**hosts**
+hosts
 
 
 
@@ -24,7 +24,7 @@ To quickly update packages, clean system bloat, and handle necessary reboots wit
 
 
 
-**update.yml**
+update.yml
 
 
 
@@ -131,8 +131,4 @@ To quickly update packages, clean system bloat, and handle necessary reboots wit
 &#x20;       msg: "Rebooting homelab server after system updates..."
 
 &#x20;     when: reboot\_flag.stat.exists
-
-
-
-
 

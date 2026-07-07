@@ -1,56 +1,28 @@
-\# DokuWiki
+# DokuWiki
 
-\### What is it?
-
+### What is it?
 A simple flat-file wiki with no database required. Used as the documentation platform for this homelab.
 
-
-
-\### Why did I install it?
-
+### Why did I install it?
 To document everything done on the homelab — services, configs, runbooks, and notes.
 
+### Access
 
-
-\### Access
-
-
-
-\### compose.yaml
-
-
+### compose.yaml
 
 ```yaml
-
 services:
-
-&#x20; dokuwiki:
-
-&#x20;   image: lscr.io/linuxserver/dokuwiki:latest
-
-&#x20;   container\_name: dokuwiki
-
-&#x20;   environment:
-
-&#x20;     - PUID=1000
-
-&#x20;     - PGID=1000
-
-&#x20;     - TZ=America/New\_York
-
-&#x20;   volumes:
-
-&#x20;     - ./dokuwiki/config:/config
-
-&#x20;   ports:
-
-&#x20;     - 8081:80
-
-&#x20;     - 8443:443
-
-&#x20;   restart: unless-stopped
-
+  dokuwiki:
+    image: lscr.io/linuxserver/dokuwiki:latest
+    container_name: dokuwiki
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+    volumes:
+      - ./dokuwiki/config:/config
+    ports:
+      - 8081:80
+      - 8443:443
+    restart: unless-stopped
 ```
-
-
-

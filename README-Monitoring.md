@@ -82,7 +82,7 @@ scrape_configs:
       module: [http_2xx]
     static_configs:
       - targets:
-          - http://192.168.1.5
+          - http://192.168.1.x #IP placeholder
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target

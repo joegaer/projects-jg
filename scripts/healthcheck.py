@@ -1,6 +1,6 @@
 import requests
 from datetime import datetime
-from config import HOST
+from config import HOST, DISCORD_WEBHOOK_URL
 
 services = {
     "DokuWiki": 8081,
@@ -30,10 +30,12 @@ for name, port in services.items():
             result = f"{timestamp} - {name} responded but may need attention ({response.status_code})"
             attention_count += 1
             print(result)
+            requests.post(DISCORD_WEBHOOK_URL, json={"content": result})
     except requests.exceptions.RequestException as e:
         result = f"{timestamp} - {name} is DOWN: {e}"
         down_count += 1
         print(result)
+        requests.post(DISCORD_WEBHOOK_URL, json={"content": result})
 
 
     with open("healthcheck.log", "a") as log_file:

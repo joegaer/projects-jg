@@ -1,0 +1,22 @@
+name: Check healthcheck.py
+
+on: push
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependecies
+        run: pip install requests
+
+      - name: Check script compiles without errors
+        run: python -m py_compile scripts/healthcheck.py

@@ -1,22 +1,38 @@
-name: Check healthcheck.py
+name: Check healthcheck.py # ① just a label
 
-on: push
+on: push # ② trigger: runs on every push
 
 jobs:
-  syntax-check:
+  syntax-check: # job name (arbitrary)
+    runs-on: ubuntu-latest # ③ runs on a fresh Ubuntu machine
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v4 # ④ pre-built action: downloads your code
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12" # ④ pre-built action: installs Python 3.12
+
+      - name: Install dependencies
+        run: pip install requests # ⑤ raw command: install a package
+
+      - name: Check script compiles without errors
+        run: python -m py_compile scripts/healthcheck.py # ⑤ raw command: the actual check
+  deploy:
+    needs: syntax-check
     runs-on: ubuntu-latest
 
     steps:
       - name: Check out the repo
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - name: Deploy healthcheck.py to homelab server
+        uses: appleboy/scp-action@v0.1.7
         with:
-          python-version: "3.12"
-
-      - name: Install dependecies
-        run: pip install requests
-
-      - name: Check script compiles without errors
-        run: python -m py_compile scripts/healthcheck.py
+          host: ${{ secrets.HOMELAB_HOST  }}
+          username: ${{ secrets.HOMELAB_USER  }}
+          key: ${{  secrets.HOMELAB_SSH_KEY  }}
+          source: "scripts/healthcheck.py"
+          target: "/home/joe/"
+          strip_componets: 1

@@ -18,7 +18,7 @@ up_count = 0
 attention_count = 0
 down_count = 0
 
-for name, port in services.items()
+for name, port in services.items():
     url = f"http://{HOST}:{port}"
     timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     try:

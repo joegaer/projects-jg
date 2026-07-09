@@ -35,4 +35,4 @@ jobs:
           key: ${{  secrets.HOMELAB_SSH_KEY  }}
           source: "scripts/healthcheck.py"
           target: "/home/joe/"
-          strip_componets: 1
+          strip_components: 1
